@@ -36,7 +36,26 @@ cd /home/nivetha/dwight_latest
 
 ## Running the Application
 
-### Option 1: Run Backend and Frontend Separately (Recommended for Development)
+### Quick Start (Using Startup Scripts) ⚡
+
+**The Flask backend is currently running on http://127.0.0.1:5000!**
+
+1. **Start the Flask Backend** (in one terminal):
+```bash
+cd /home/nivetha/dwight_latest
+./start_backend.sh
+```
+
+2. **Serve the Frontend** (in a new terminal):
+```bash
+cd /home/nivetha/dwight_latest
+./start_frontend.sh
+```
+
+3. **Access the Application**:
+Open your browser and navigate to: **http://localhost:8000**
+
+### Manual Start (Alternative)
 
 1. **Start the Flask Backend**:
 ```bash
@@ -44,7 +63,7 @@ cd /home/nivetha/dwight_latest/backend
 HEADLESS=1 ../venv/bin/python app.py
 ```
 
-The backend will start on `http://0.0.0.0:5000`
+The backend will start on `http://127.0.0.1:5000`
 
 2. **Serve the Frontend** (in a new terminal):
 ```bash
@@ -58,7 +77,7 @@ Open your browser and navigate to:
 http://localhost:8000
 ```
 
-### Option 2: Run the Standalone Pygame Simulation
+### Standalone Pygame Simulation
 
 ```bash
 cd /home/nivetha/dwight_latest/backend
