@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWIGHT UX - Y2K Apocalypse Edition</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="main-screen">
+            <div id="grid-container"></div>
+        </div>
+        <div class="control-panel">
+            <h1>DWIGHT UX</h1>
+            <h2>Neural ACO Emergency Response System</h2>
+            <div class="stats">
+                <h3>SIMULATION RESULTS</h3>
+                <p><strong>Status:</strong> <span id="status">Idle</span></p>
+                <p><strong>Escaped:</strong> <span id="escaped">0</span></p>
+                <p><strong>Deaths:</strong> <span id="deaths">0</span></p>
+                <p><strong>Alive:</strong> <span id="alive">0</span></p>
+                <p><strong>Fires Active:</strong> <span id="fires">0</span></p>
+                <p><strong>Neural Confidence:</strong> <span id="confidence">0%</span></p>
+                <p><strong>RL Decisions:</strong> <span id="rl-decisions">0</span></p>
+            </div>
+            <div class="innovations">
+                <h3>PATENTABLE INNOVATIONS</h3>
+                <ul>
+                    <li>🧠 Neural Predictive ACO (NP-ACO)</li>
+                    <li>📡 IoT Sensor Fusion Layer</li>
+                    <li>🤖 Reinforcement Learning Evacuation Coordinator</li>
+                    <li>🎯 3D Perspective View (Simulated)</li>
+                </ul>
+            </div>
+            <button id="run-button">RUN SIMULATION</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <audio id="click-sound" src="sounds/click.mp3"></audio>
+    <audio id="success-sound" src="sounds/success.mp3"></audio>
+</body>
+</html>
