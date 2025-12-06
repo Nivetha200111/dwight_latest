@@ -11,11 +11,6 @@
       "config": { "includeFiles": "backend/**/*.py" }
     }
   ],
-  "routes": [
-    { "src": "/api/run_simulation", "dest": "/api/run_simulation.py" },
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
-  ],
   "headers": [
     {
       "source": "/api/(.*)",
