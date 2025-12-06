@@ -1,8 +1,8 @@
 {
   "version": 2,
   "framework": null,
-  "buildCommand": "cd frontend && npm install && npm run build",
-  "outputDirectory": "frontend/build",
+  "buildCommand": "echo \"Static deploy - no React build\"",
+  "devCommand": "echo \"Use local scripts: start_frontend.sh / start_backend.sh\"",
   "installCommand": "pip install -r requirements.txt",
   "builds": [
     {
@@ -15,5 +15,15 @@
     { "src": "/api/run_simulation", "dest": "/api/run_simulation.py" },
     { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+      ]
+    }
   ]
 }
