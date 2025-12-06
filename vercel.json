@@ -1,22 +1,19 @@
 {
   "version": 2,
+  "framework": null,
+  "buildCommand": "cd frontend && npm install && npm run build",
+  "outputDirectory": "frontend/build",
+  "installCommand": "pip install -r requirements.txt",
   "builds": [
     {
       "src": "api/run_simulation.py",
       "use": "@vercel/python",
       "config": { "includeFiles": "backend/**/*.py" }
-    },
-    {
-      "src": "frontend/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build",
-        "buildCommand": "npm install && npm run build"
-      }
     }
   ],
   "routes": [
     { "src": "/api/run_simulation", "dest": "/api/run_simulation.py" },
-    { "src": "/(.*)", "dest": "/frontend/build/$1" }
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
