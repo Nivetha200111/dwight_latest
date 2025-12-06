@@ -9,20 +9,15 @@
       "src": "api/run_simulation.py",
       "use": "@vercel/python",
       "config": { "includeFiles": "backend/**/*.py" }
-    }
+    },
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "style.css", "use": "@vercel/static" },
+    { "src": "script.js", "use": "@vercel/static" },
+    { "src": "favicon.svg", "use": "@vercel/static" },
+    { "src": "sounds/(.*)", "use": "@vercel/static" }
   ],
-  "headers": [
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
-      ]
-    }
-  ],
-  "rewrites": [
-    { "source": "/api/run_simulation", "destination": "/api/run_simulation.py" },
-    { "source": "/(.*)", "destination": "/index.html" }
+  "routes": [
+    { "src": "/api/run_simulation", "dest": "/api/run_simulation.py" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
