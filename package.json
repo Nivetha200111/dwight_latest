@@ -1,0 +1,12 @@
+{
+  "name": "dwight-ux",
+  "version": "1.0.0",
+  "description": "Neural ACO Emergency Response System - Y2K Edition",
+  "scripts": {
+    "build": "echo 'No build needed - static files'",
+    "dev": "echo 'Use local development setup'"
+  },
+  "keywords": ["emergency", "evacuation", "neural-network", "ai", "y2k"],
+  "author": "Nivetha",
+  "license": "MIT"
+}
