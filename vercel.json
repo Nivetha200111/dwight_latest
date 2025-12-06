@@ -20,5 +20,9 @@
         { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
       ]
     }
+  ],
+  "rewrites": [
+    { "source": "/api/run_simulation", "destination": "/api/run_simulation.py" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
