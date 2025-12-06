@@ -15,9 +15,5 @@
     { "src": "script.js", "use": "@vercel/static" },
     { "src": "favicon.svg", "use": "@vercel/static" },
     { "src": "sounds/(.*)", "use": "@vercel/static" }
-  ],
-  "routes": [
-    { "src": "/api/run_simulation", "dest": "/api/run_simulation.py" },
-    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
