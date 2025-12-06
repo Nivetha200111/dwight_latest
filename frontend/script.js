@@ -25,21 +25,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const response = await fetch('/api/run_simulation');
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Server error:', errorData);
+                status.textContent = `Error: ${errorData.error || 'Server error'}`;
+                return;
+            }
+
             const data = await response.json();
 
+            if (data.error) {
+                console.error('Simulation error:', data.error);
+                status.textContent = `Error: ${data.error}`;
+                return;
+            }
+
             status.textContent = 'Finished';
-            escaped.textContent = data.escaped;
-            deaths.textContent = data.deaths;
-            alive.textContent = data.alive;
-            fires.textContent = data.fires_active;
-            confidence.textContent = `${(data.neural_confidence * 100).toFixed(1)}%`;
-            rlDecisions.textContent = data.rl_decisions;
+            escaped.textContent = data.escaped || 0;
+            deaths.textContent = data.deaths || 0;
+            alive.textContent = data.alive || 0;
+            fires.textContent = data.fires_active || 0;
+            confidence.textContent = `${((data.neural_confidence || 0) * 100).toFixed(1)}%`;
+            rlDecisions.textContent = data.rl_decisions || 0;
 
             successSound.play();
 
         } catch (error) {
             console.error('Error running simulation:', error);
-            status.textContent = 'Error';
+            status.textContent = `Error: ${error.message}`;
         } finally {
             runButton.disabled = false;
         }
