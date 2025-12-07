@@ -77,7 +77,7 @@ if not HEADLESS:
 # CONFIGURATION
 # ═══════════════════════════════════════════════════════════════════════════════
 
-ROWS = 50
+ROWS = 45 # Keep rows/cols consistent with original for map generation
 COLS = 70
 TILE = 14
 TOTAL_PEOPLE = 60
@@ -1503,8 +1503,8 @@ def draw_panel(surface, stats, neural_aco, sensor_network, rl_coordinator, time_
     pygame.draw.rect(surface, conf_color, (px + 12, y, int(150 * confidence), 8))
     y += 14
 
-    predictions = neural_aco.lstm.predict_spread([], {}, [])  # Get current predictions
-    surface.blit(font_small.render(f"Predicted Danger Zones: {len(predictions)}", True, Colors.PREDICTION), (px + 12, y))
+    predicted_count = int(np.count_nonzero(neural_aco.predicted_danger > 0.2))
+    surface.blit(font_small.render(f"Predicted Danger Zones: {predicted_count}", True, Colors.PREDICTION), (px + 12, y))
     y += 16
 
     pygame.draw.line(surface, Colors.PANEL_BORDER, (px + 8, y), (px + PANEL_WIDTH - 8, y), 1)
