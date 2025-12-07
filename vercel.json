@@ -5,68 +5,20 @@
       "src": "api/run_simulation.py",
       "use": "@vercel/python",
       "config": {
-        "maxLambdaSize": "50mb",
-        "runtime": "python3.9"
+        "includeFiles": "backend/**/*.py",
+        "maxLambdaSize": "50mb"
       }
     },
-    {
-      "src": "index.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "style.css",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "script.js",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "favicon.svg",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "sounds/**",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "backend/**/*.py",
-      "use": "@vercel/python",
-      "config": {
-        "includeFiles": "backend/**/*.py"
-      }
-    }
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "style.css", "use": "@vercel/static" },
+    { "src": "script.js", "use": "@vercel/static" },
+    { "src": "favicon.svg", "use": "@vercel/static" },
+    { "src": "sounds/**", "use": "@vercel/static" }
   ],
   "routes": [
-    {
-      "src": "/api/run_simulation",
-      "dest": "/api/run_simulation.py"
-    },
-    {
-      "src": "/sounds/(.*)",
-      "dest": "/sounds/$1"
-    },
-    {
-      "src": "/(.*\\.css)",
-      "dest": "/$1"
-    },
-    {
-      "src": "/(.*\\.js)",
-      "dest": "/$1"
-    },
-    {
-      "src": "/(.*\\.svg)",
-      "dest": "/$1"
-    },
-    {
-      "src": "/",
-      "dest": "/index.html"
-    }
-  ],
-  "functions": {
-    "api/run_simulation.py": {
-      "maxDuration": 60,
-      "memory": 1024
-    }
-  }
+    { "src": "/api/run_simulation", "dest": "/api/run_simulation.py" },
+    { "src": "/sounds/(.*)", "dest": "/sounds/$1" },
+    { "src": "/(.*\\.(?:css|js|svg))", "dest": "/$1" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
 }
