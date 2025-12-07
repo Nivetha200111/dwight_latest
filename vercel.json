@@ -1,19 +1,72 @@
 {
   "version": 2,
-  "framework": null,
-  "buildCommand": "echo \"Static deploy - no React build\"",
-  "devCommand": "echo \"Use local scripts: start_frontend.sh / start_backend.sh\"",
-  "installCommand": "pip install -r requirements.txt",
   "builds": [
     {
       "src": "api/run_simulation.py",
       "use": "@vercel/python",
-      "config": { "includeFiles": "backend/**/*.py" }
+      "config": {
+        "maxLambdaSize": "50mb",
+        "runtime": "python3.9"
+      }
     },
-    { "src": "index.html", "use": "@vercel/static" },
-    { "src": "style.css", "use": "@vercel/static" },
-    { "src": "script.js", "use": "@vercel/static" },
-    { "src": "favicon.svg", "use": "@vercel/static" },
-    { "src": "sounds/(.*)", "use": "@vercel/static" }
-  ]
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "style.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "script.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "favicon.svg",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "sounds/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "backend/**/*.py",
+      "use": "@vercel/python",
+      "config": {
+        "includeFiles": "backend/**/*.py"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/run_simulation",
+      "dest": "/api/run_simulation.py"
+    },
+    {
+      "src": "/sounds/(.*)",
+      "dest": "/sounds/$1"
+    },
+    {
+      "src": "/(.*\\.css)",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*\\.js)",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*\\.svg)",
+      "dest": "/$1"
+    },
+    {
+      "src": "/",
+      "dest": "/index.html"
+    }
+  ],
+  "functions": {
+    "api/run_simulation.py": {
+      "maxDuration": 60,
+      "memory": 1024
+    }
+  }
 }
