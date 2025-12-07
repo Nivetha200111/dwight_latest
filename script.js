@@ -10,18 +10,69 @@ document.addEventListener('DOMContentLoaded', () => {
     const gridContainer = document.getElementById('grid-container');
     const clickSound = document.getElementById('click-sound');
     const successSound = document.getElementById('success-sound');
+    let playbackTimer = null;
+    let lastFrameIndex = 0;
 
     // Create the grid
-    for (let i = 0; i < 50 * 70; i++) {
+    const rows = 50;
+    const cols = 70;
+    for (let i = 0; i < rows * cols; i++) {
         const cell = document.createElement('div');
         cell.classList.add('grid-cell');
         gridContainer.appendChild(cell);
     }
 
+    const cells = Array.from(document.querySelectorAll('.grid-cell'));
+
+    const clearPlayback = () => {
+        if (playbackTimer) {
+            cancelAnimationFrame(playbackTimer);
+            playbackTimer = null;
+        }
+        lastFrameIndex = 0;
+        cells.forEach(cell => {
+            cell.classList.remove('fire', 'smoke', 'alive', 'dead', 'escaped', 'warden');
+        });
+    };
+
+    const drawFrame = (frame) => {
+        // Reset classes for dynamic elements
+        cells.forEach(cell => cell.classList.remove('fire', 'smoke', 'alive', 'dead', 'escaped', 'warden'));
+
+        frame.fires.forEach(({ r, c }) => {
+            const idx = r * cols + c;
+            cells[idx]?.classList.add('fire');
+        });
+
+        frame.smoke.forEach(({ r, c }) => {
+            const idx = r * cols + c;
+            cells[idx]?.classList.add('smoke');
+        });
+
+        frame.people.forEach(({ r, c, state, warden }) => {
+            const idx = r * cols + c;
+            if (!cells[idx]) return;
+            cells[idx].classList.add(state);
+            if (warden) cells[idx].classList.add('warden');
+        });
+    };
+
+    const playFrames = (frames) => {
+        if (!frames || !frames.length) return;
+        const step = () => {
+            const frame = frames[lastFrameIndex];
+            drawFrame(frame);
+            lastFrameIndex = (lastFrameIndex + 1) % frames.length;
+            playbackTimer = requestAnimationFrame(step);
+        };
+        playbackTimer = requestAnimationFrame(step);
+    };
+
     runButton.addEventListener('click', async () => {
         clickSound.play();
         status.textContent = 'Running...';
         runButton.disabled = true;
+        clearPlayback();
 
         try {
             const response = await fetch('/api/run_simulation');
@@ -50,6 +101,12 @@ document.addEventListener('DOMContentLoaded', () => {
             rlDecisions.textContent = data.rl_decisions || 0;
 
             successSound.play();
+            if (data.frames) {
+                status.textContent = 'Replaying...';
+                playFrames(data.frames);
+            } else {
+                status.textContent = 'Finished';
+            }
 
         } catch (error) {
             console.error('Error running simulation:', error);

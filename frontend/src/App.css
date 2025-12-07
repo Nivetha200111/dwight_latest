@@ -13,19 +13,6 @@
   overflow: hidden;
 }
 
-.container::after {
-  content: " ";
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: repeating-linear-gradient(0deg, rgba(0,0,0,0.5), rgba(0,0,0,0.5) 1px, transparent 1px, transparent 2px);
-  pointer-events: none;
-  z-index: 1000;
-}
-
 .main-screen {
   flex: 3;
   padding: 20px;
@@ -34,19 +21,91 @@
   position: relative;
 }
 
+.scanline-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      rgba(0, 0, 0, 0.5) 0px,
+      rgba(0, 0, 0, 0.5) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  animation: scanline 15s linear infinite;
+  z-index: 2;
+}
+
+@keyframes scanline {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100%; }
+}
+
 #grid-container {
   display: grid;
   grid-template-columns: repeat(70, 1fr);
-  grid-template-rows: repeat(50, 1fr);
+  grid-template-rows: repeat(45, 1fr);
   width: 100%;
   height: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .grid-cell {
-  width: 100%;
-  height: 100%;
   background-color: #111;
   border: 1px solid #222;
+  transition: background-color 0.2s, opacity 0.5s;
+}
+
+/* --- Majestic Y2K Effects --- */
+
+.fire {
+  background-color: #ff4800;
+  animation: fire-flicker 0.5s infinite alternate;
+  box-shadow: 0 0 10px #ff8c00, 0 0 20px #ff4500, inset 0 0 5px #ffeb3b;
+  z-index: 10;
+}
+
+@keyframes fire-flicker {
+  from { opacity: 0.7; transform: scale(1); }
+  to { opacity: 1; transform: scale(1.1); }
+}
+
+.smoke {
+  background-color: #333;
+  opacity: 0.6;
+  animation: smoke-drift 8s ease-in-out infinite alternate;
+}
+
+@keyframes smoke-drift {
+  from { transform: translateX(-2px) translateY(-2px); opacity: 0.5; }
+  to { transform: translateX(2px) translateY(2px); opacity: 0.7; }
+}
+
+.alive {
+  background-color: #00ffff;
+  box-shadow: 0 0 8px #00ffff, 0 0 12px #00ffff;
+  animation: neon-pulse 2s infinite ease-in-out;
+  border-radius: 50%;
+}
+
+@keyframes neon-pulse {
+  0%, 100% { box-shadow: 0 0 5px #00ffff, 0 0 8px #00ffff; }
+  50% { box-shadow: 0 0 8px #00aaff, 0 0 15px #00aaff; }
+}
+
+.warden {
+  background-color: #ffff00;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px cyan;
+}
+
+.escaped {
+  opacity: 0.2;
+  background-color: #555;
 }
 
 .control-panel {
@@ -54,24 +113,23 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
+  z-index: 5;
+  background: #080808;
 }
 
 h1, h2, h3 {
   color: #0F0;
   text-shadow: 0 0 5px #0F0;
-  animation: flicker 3s infinite;
+  animation: text-flicker 3s infinite;
 }
 
-h1 {
-  font-size: 2em;
-  margin-bottom: 0;
+@keyframes text-flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.9; }
 }
 
-h2 {
-  font-size: 1em;
-  margin-top: 0;
-  color: #0A0;
-}
+h1 { font-size: 2em; margin-bottom: 0; }
+h2 { font-size: 1em; margin-top: 0; color: #0A0; }
 
 .stats, .innovations {
   border: 1px solid #0F0;
@@ -80,15 +138,8 @@ h2 {
   background-color: #050A05;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  margin-bottom: 5px;
-  text-shadow: 0 0 2px #0F0;
-}
+ul { list-style-type: none; padding: 0; }
+li { margin-bottom: 5px; text-shadow: 0 0 2px #0F0; }
 
 #run-button {
   background-color: #0F0;
@@ -113,13 +164,4 @@ li {
   color: #AAA;
   cursor: not-allowed;
   box-shadow: none;
-}
-
-@keyframes flicker {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.8;
-  }
 }

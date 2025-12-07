@@ -56,6 +56,28 @@ body {
     border: 1px solid #222;
 }
 
+/* Dynamic simulation states */
+.grid-cell.fire {
+    background: radial-gradient(circle, rgba(255,80,80,0.9), rgba(255,0,0,0.3));
+    box-shadow: 0 0 6px rgba(255,80,80,0.6);
+}
+.grid-cell.smoke {
+    background: rgba(120,120,140,0.3);
+}
+.grid-cell.alive {
+    background: #00ffaa;
+}
+.grid-cell.warden {
+    box-shadow: 0 0 6px #00ffff;
+}
+.grid-cell.dead {
+    background: #ff2e63;
+}
+.grid-cell.escaped {
+    background: #444;
+    opacity: 0.4;
+}
+
 .control-panel {
     flex: 1;
     padding: 20px;

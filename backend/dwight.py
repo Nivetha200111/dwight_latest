@@ -1878,6 +1878,10 @@ def run_headless_simulation(steps=240, dt=1 / 30.0):
 
     stats = {'escaped': 0, 'deaths': 0, 'total': TOTAL_PEOPLE}
 
+    # Collect lightweight frames so the frontend can replay the sim visually.
+    frames = []
+    capture_every = 3  # capture ~80 frames over 240 steps to keep payload small
+
     # Seed an ignition so the loop has meaningful activity.
     disasters.add_fire(ROWS // 2, COLS // 2)
 
@@ -1919,6 +1923,23 @@ def run_headless_simulation(steps=240, dt=1 / 30.0):
         stats['escaped'] = sum(1 for p in people if p.escaped)
         stats['deaths'] = sum(1 for p in people if not p.alive)
 
+        # Snapshot positions for the frontend playback
+        if steps_run % capture_every == 0:
+            frames.append({
+                'step': steps_run,
+                'people': [
+                    {
+                        'r': p.row,
+                        'c': p.col,
+                        'state': 'escaped' if p.escaped else ('dead' if not p.alive else 'alive'),
+                        'warden': bool(p.is_warden)
+                    }
+                    for p in people
+                ],
+                'fires': [{'r': r, 'c': c} for r, c in disasters.get_fire_positions()],
+                'smoke': [{'r': r, 'c': c} for r, c in disasters.smoke]
+            })
+
         # Exit early if everyone is resolved
         if stats['escaped'] + stats['deaths'] >= stats['total']:
             break
@@ -1934,6 +1955,9 @@ def run_headless_simulation(steps=240, dt=1 / 30.0):
         'rl_decisions': rl_coordinator.decisions_made,
         'sensor_coverage': sensor_snapshot.get('coverage', 0),
         'avg_temp': sensor_snapshot.get('temperature_avg', 0),
+        'frames': frames,
+        'rows': ROWS,
+        'cols': COLS,
     }
 
 if __name__ == "__main__":
