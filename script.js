@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let playbackTimer = null;
     let lastFrameIndex = 0;
 
-    // Create the grid
-    const rows = 50;
+    // Create the grid - must match backend ROWS/COLS in dwight.py
+    const rows = 45;
     const cols = 70;
     for (let i = 0; i < rows * cols; i++) {
         const cell = document.createElement('div');
@@ -101,11 +101,18 @@ document.addEventListener('DOMContentLoaded', () => {
             rlDecisions.textContent = data.rl_decisions || 0;
 
             successSound.play();
-            if (data.frames) {
+            console.log('Simulation data:', {
+                escaped: data.escaped,
+                deaths: data.deaths,
+                framesCount: data.frames?.length || 0
+            });
+
+            if (data.frames && data.frames.length > 0) {
                 status.textContent = 'Replaying...';
                 playFrames(data.frames);
             } else {
-                status.textContent = 'Finished';
+                console.warn('No frames returned from simulation');
+                status.textContent = 'Finished (no playback)';
             }
 
         } catch (error) {
